@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const {validationResult} = require('express-validator');
 const jwt = require('jsonwebtoken');
 const {registrationValedator, loginValidator} = require('../validations/auth');
+const {isAuth} = require('../middlewares/auth');
 const User = require('../models/User');
 
 const router = express.Router();
@@ -18,7 +19,7 @@ router.post('/register', registrationValedator, async (req, res) => {
 
         const candidateUser = await User.findOne({ email });
         if (candidateUser) {
-            return res.status(400).json('user with this email already exists');
+            return res.status(400).json({ message: 'user with this email already exists' });
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -33,7 +34,7 @@ router.post('/register', registrationValedator, async (req, res) => {
 
         user.save();
 
-        const token = await jwt.sign({
+        const token = jwt.sign({
             _id: user._id,
             email: user.email,
             fullName: user.fullName,
@@ -48,7 +49,7 @@ router.post('/register', registrationValedator, async (req, res) => {
 
         res.status(200).json(resUser);
     } catch (e) {
-        res.status(500).json('Something went wrong, please try again');
+        res.status(500).json({ message: 'Something went wrong, please try again' });
     }
 });
 
@@ -64,16 +65,16 @@ router.post('/login', loginValidator, async (req, res) => {
         const candidateUser = await User.findOne({ email });
     
         if (!candidateUser) {
-            return res.status(400).json('Invalid email or password');
+            return res.status(400).json({ message: 'Invalid email or password' });
         }
 
         const isValidPassword = await bcrypt.compare(password, candidateUser.password);
 
         if (!isValidPassword) {
-            return res.status(400).json('Invalid email or password');
+            return res.status(400).json({ message: 'Invalid email or password' });
         }
 
-        const token = await jwt.sign({
+        const token = jwt.sign({
             _id: candidateUser._id,
             email: candidateUser.email,
             fullName: candidateUser.fullName,
@@ -90,7 +91,19 @@ router.post('/login', loginValidator, async (req, res) => {
 
         res.json(resUser);
     } catch (e) {
-        res.status(500).json('Something went wrong, please try again');
+        res.status(500).json({ message: 'Something went wrong, please try again' });
+    }
+});
+
+router.get('/me', isAuth, async (req, res) => {
+    try {
+        const tokenFields = jwt.verify(req.token, process.env.MONGO_SECRET);
+        
+        const user = await User.findOne({ _id: tokenFields._id });
+
+        res.json(user);
+    } catch (e) {
+        res.status(500).json({ message: 'Something went wrong, please try again' });
     }
 });
 

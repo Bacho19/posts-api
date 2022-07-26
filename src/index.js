@@ -12,13 +12,9 @@ mongoose.connect(process.env.MONGODB_CONNECT).then(() => {
     console.log('DB error', err);
 });
 
-
 app.use(express.json());
 app.use('/auth', require('./routes/auth.js'));
-
-app.get('/', (req, res) => {
-    res.json('asd');
-});
+app.use('/posts', require('./routes/posts.js'));
 
 app.listen(PORT, () => {
     console.log(`server was started on port ${PORT}`)
