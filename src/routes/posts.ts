@@ -1,6 +1,6 @@
-const express = require('express');
-const { isAuth } = require('../middlewares/auth');
-const Post = require('../models/Post');
+import express from 'express';
+import { isAuth } from '../middlewares/auth';
+// const Post = require('../models/Post');
 
 const router = express.Router();
 
