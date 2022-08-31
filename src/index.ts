@@ -1,6 +1,7 @@
 import express from 'express';
 import { AppDataSource } from './data-source';
 import authRoute from './routes/auth';
+import postsRoute from './routes/posts';
 
 const app = express();
 
@@ -8,7 +9,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use('/auth', authRoute);
-// app.use('/posts', require('./routes/posts.ts'));
+app.use('/posts', postsRoute);
 
 const loadDatabase = async () => {
     try {

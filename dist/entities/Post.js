@@ -34,7 +34,8 @@ __decorate([
 ], PostsEntity.prototype, "body", void 0);
 __decorate([
     (0, typeorm_1.Column)({
-        name: 'image_url'
+        name: 'image_url',
+        nullable: true
     }),
     __metadata("design:type", String)
 ], PostsEntity.prototype, "imageUrl", void 0);
