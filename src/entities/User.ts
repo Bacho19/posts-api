@@ -1,10 +1,12 @@
-import {Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany} from 'typeorm';
+import {Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, BaseEntity} from 'typeorm';
 import { PostsEntity } from './Post';
 
 @Entity({name: 'users'})
-export class UserEntity {
-    @PrimaryGeneratedColumn()
-    user_id: number;
+export class UserEntity extends BaseEntity {
+    @PrimaryGeneratedColumn({
+        name: 'user_id'
+    })
+    userId: number;
 
     @Column({
         nullable: false,
@@ -12,13 +14,21 @@ export class UserEntity {
     })
     email: string;
 
-    @Column({nullable: false})
-    full_name: string;
+    @Column({
+        name: 'full_name',
+        nullable: false
+    })
+    fullName: string;
 
-    @Column({nullable: false})
+    @Column({
+        nullable: false
+    })
     password: string
 
-    @Column()
+    @Column({
+        name: 'avatar_url',
+        nullable: true
+    })
     avatarUrl: string;
 
     @OneToMany(
@@ -27,9 +37,13 @@ export class UserEntity {
     )
     posts: PostsEntity[]
 
-    @CreateDateColumn()
-    created_at: Date;
+    @CreateDateColumn({
+        name: 'created_at'
+    })
+    createdAt: Date;
 
-    @UpdateDateColumn()
-    updated_at: Date;
+    @UpdateDateColumn({
+        name: 'updated_at'
+    })
+    updatedAt: Date;
 };

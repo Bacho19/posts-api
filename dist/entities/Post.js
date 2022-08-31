@@ -12,12 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostsEntity = void 0;
 const typeorm_1 = require("typeorm");
 const User_1 = require("./User");
-let PostsEntity = class PostsEntity {
+let PostsEntity = class PostsEntity extends typeorm_1.BaseEntity {
 };
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)({
+        name: 'post_id'
+    }),
     __metadata("design:type", Number)
-], PostsEntity.prototype, "post_id", void 0);
+], PostsEntity.prototype, "postId", void 0);
 __decorate([
     (0, typeorm_1.Column)({
         nullable: false
@@ -31,24 +33,32 @@ __decorate([
     __metadata("design:type", String)
 ], PostsEntity.prototype, "body", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({
+        name: 'image_url'
+    }),
     __metadata("design:type", String)
-], PostsEntity.prototype, "image_url", void 0);
+], PostsEntity.prototype, "imageUrl", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => User_1.UserEntity, user => user.posts),
+    (0, typeorm_1.ManyToOne)(() => User_1.UserEntity, user => user.posts, {
+        onDelete: 'SET NULL',
+    }),
     (0, typeorm_1.JoinColumn)({
         name: 'user_id'
     }),
     __metadata("design:type", User_1.UserEntity)
 ], PostsEntity.prototype, "user", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
+    (0, typeorm_1.CreateDateColumn)({
+        name: 'created_at'
+    }),
     __metadata("design:type", Date)
-], PostsEntity.prototype, "created_at", void 0);
+], PostsEntity.prototype, "createdAt", void 0);
 __decorate([
-    (0, typeorm_1.UpdateDateColumn)(),
+    (0, typeorm_1.UpdateDateColumn)({
+        name: 'updated_at'
+    }),
     __metadata("design:type", Date)
-], PostsEntity.prototype, "updated_at", void 0);
+], PostsEntity.prototype, "updatedAt", void 0);
 PostsEntity = __decorate([
     (0, typeorm_1.Entity)({
         name: 'posts'

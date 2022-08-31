@@ -12,12 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserEntity = void 0;
 const typeorm_1 = require("typeorm");
 const Post_1 = require("./Post");
-let UserEntity = class UserEntity {
+let UserEntity = class UserEntity extends typeorm_1.BaseEntity {
 };
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)({
+        name: 'user_id'
+    }),
     __metadata("design:type", Number)
-], UserEntity.prototype, "user_id", void 0);
+], UserEntity.prototype, "userId", void 0);
 __decorate([
     (0, typeorm_1.Column)({
         nullable: false,
@@ -26,15 +28,23 @@ __decorate([
     __metadata("design:type", String)
 ], UserEntity.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: false }),
+    (0, typeorm_1.Column)({
+        name: 'full_name',
+        nullable: false
+    }),
     __metadata("design:type", String)
-], UserEntity.prototype, "full_name", void 0);
+], UserEntity.prototype, "fullName", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: false }),
+    (0, typeorm_1.Column)({
+        nullable: false
+    }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({
+        name: 'avatar_url',
+        nullable: true
+    }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "avatarUrl", void 0);
 __decorate([
@@ -42,13 +52,17 @@ __decorate([
     __metadata("design:type", Array)
 ], UserEntity.prototype, "posts", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
+    (0, typeorm_1.CreateDateColumn)({
+        name: 'created_at'
+    }),
     __metadata("design:type", Date)
-], UserEntity.prototype, "created_at", void 0);
+], UserEntity.prototype, "createdAt", void 0);
 __decorate([
-    (0, typeorm_1.UpdateDateColumn)(),
+    (0, typeorm_1.UpdateDateColumn)({
+        name: 'updated_at'
+    }),
     __metadata("design:type", Date)
-], UserEntity.prototype, "updated_at", void 0);
+], UserEntity.prototype, "updatedAt", void 0);
 UserEntity = __decorate([
     (0, typeorm_1.Entity)({ name: 'users' })
 ], UserEntity);
