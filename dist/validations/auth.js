@@ -7,7 +7,5 @@ exports.registrationValidator = [
     body('fullName').isLength({ min: 4 }),
     body('password').isLength({ min: 5 }),
 ];
-exports.loginValidator = [
-    body('email').isEmail(),
-];
+exports.loginValidator = [body('email').isEmail()];
 //# sourceMappingURL=auth.js.map

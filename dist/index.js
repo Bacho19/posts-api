@@ -19,7 +19,7 @@ const loadDatabase = async () => {
     }
     catch (e) {
         console.log(e);
-        throw Error('Error: database wasn\'t connected');
+        throw Error("Error: database wasn't connected");
     }
 };
 app.listen(PORT, () => {

@@ -1,4 +1,4 @@
-import {body} from 'express-validator';
+import { body } from 'express-validator';
 
 export const postValidator = [
     body('title').isLength({ min: 5 }),

@@ -1,4 +1,4 @@
-const {body} = require('express-validator');
+const { body } = require('express-validator');
 
 export const registrationValidator = [
     body('email').isEmail(),
@@ -6,6 +6,4 @@ export const registrationValidator = [
     body('password').isLength({ min: 5 }),
 ];
 
-export const loginValidator = [
-    body('email').isEmail(),
-];
+export const loginValidator = [body('email').isEmail()];

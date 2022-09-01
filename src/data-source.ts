@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import {DataSource} from 'typeorm';
+import { DataSource } from 'typeorm';
 import dotenv from 'dotenv';
 import { UserEntity } from './entities/User';
 import { PostsEntity } from './entities/Post';

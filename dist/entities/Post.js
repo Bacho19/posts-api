@@ -16,53 +16,53 @@ let PostsEntity = class PostsEntity extends typeorm_1.BaseEntity {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)({
-        name: 'post_id'
+        name: 'post_id',
     }),
     __metadata("design:type", Number)
 ], PostsEntity.prototype, "postId", void 0);
 __decorate([
     (0, typeorm_1.Column)({
-        nullable: false
+        nullable: false,
     }),
     __metadata("design:type", String)
 ], PostsEntity.prototype, "title", void 0);
 __decorate([
     (0, typeorm_1.Column)({
-        nullable: false
+        nullable: false,
     }),
     __metadata("design:type", String)
 ], PostsEntity.prototype, "body", void 0);
 __decorate([
     (0, typeorm_1.Column)({
         name: 'image_url',
-        nullable: true
+        nullable: true,
     }),
     __metadata("design:type", String)
 ], PostsEntity.prototype, "imageUrl", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => User_1.UserEntity, user => user.posts, {
+    (0, typeorm_1.ManyToOne)(() => User_1.UserEntity, (user) => user.posts, {
         onDelete: 'SET NULL',
     }),
     (0, typeorm_1.JoinColumn)({
-        name: 'user_id'
+        name: 'user_id',
     }),
     __metadata("design:type", User_1.UserEntity)
 ], PostsEntity.prototype, "user", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({
-        name: 'created_at'
+        name: 'created_at',
     }),
     __metadata("design:type", Date)
 ], PostsEntity.prototype, "createdAt", void 0);
 __decorate([
     (0, typeorm_1.UpdateDateColumn)({
-        name: 'updated_at'
+        name: 'updated_at',
     }),
     __metadata("design:type", Date)
 ], PostsEntity.prototype, "updatedAt", void 0);
 PostsEntity = __decorate([
     (0, typeorm_1.Entity)({
-        name: 'posts'
+        name: 'posts',
     })
 ], PostsEntity);
 exports.PostsEntity = PostsEntity;

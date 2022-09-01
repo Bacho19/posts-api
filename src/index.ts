@@ -13,13 +13,13 @@ app.use('/posts', postsRoute);
 
 const loadDatabase = async () => {
     try {
-        await AppDataSource.initialize()
+        await AppDataSource.initialize();
         console.log('database was connected');
-    } catch(e) {
+    } catch (e) {
         console.log(e);
-        throw Error('Error: database wasn\'t connected');
+        throw Error("Error: database wasn't connected");
     }
-}
+};
 
 app.listen(PORT, () => {
     console.log(`server was started on port ${PORT}`);

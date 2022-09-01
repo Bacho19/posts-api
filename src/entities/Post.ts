@@ -1,50 +1,55 @@
-import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, BaseEntity} from 'typeorm';
+import {
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    UpdateDateColumn,
+    BaseEntity,
+} from 'typeorm';
 import { UserEntity } from './User';
 
 @Entity({
-    name: 'posts'
+    name: 'posts',
 })
 export class PostsEntity extends BaseEntity {
     @PrimaryGeneratedColumn({
-        name: 'post_id'
+        name: 'post_id',
     })
     postId: number;
 
     @Column({
-        nullable: false
+        nullable: false,
     })
     title: string;
 
     @Column({
-        nullable: false
+        nullable: false,
     })
     body: string;
 
     @Column({
         name: 'image_url',
-        nullable: true
+        nullable: true,
     })
     imageUrl: string;
 
-    @ManyToOne(
-        () => UserEntity, 
-        user => user.posts,
-        {
-            onDelete: 'SET NULL',
-        }
-    )
-    @JoinColumn({
-        name: 'user_id'
+    @ManyToOne(() => UserEntity, (user) => user.posts, {
+        onDelete: 'SET NULL',
     })
-    user: UserEntity
+    @JoinColumn({
+        name: 'user_id',
+    })
+    user: UserEntity;
 
     @CreateDateColumn({
-        name: 'created_at'
+        name: 'created_at',
     })
-    createdAt: Date
+    createdAt: Date;
 
     @UpdateDateColumn({
-        name: 'updated_at'
+        name: 'updated_at',
     })
-    updatedAt: Date
+    updatedAt: Date;
 }

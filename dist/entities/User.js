@@ -16,7 +16,7 @@ let UserEntity = class UserEntity extends typeorm_1.BaseEntity {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)({
-        name: 'user_id'
+        name: 'user_id',
     }),
     __metadata("design:type", Number)
 ], UserEntity.prototype, "userId", void 0);
@@ -30,36 +30,36 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({
         name: 'full_name',
-        nullable: false
+        nullable: false,
     }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "fullName", void 0);
 __decorate([
     (0, typeorm_1.Column)({
-        nullable: false
+        nullable: false,
     }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "password", void 0);
 __decorate([
     (0, typeorm_1.Column)({
         name: 'avatar_url',
-        nullable: true
+        nullable: true,
     }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "avatarUrl", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => Post_1.PostsEntity, post => post.user),
+    (0, typeorm_1.OneToMany)(() => Post_1.PostsEntity, (post) => post.user),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "posts", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({
-        name: 'created_at'
+        name: 'created_at',
     }),
     __metadata("design:type", Date)
 ], UserEntity.prototype, "createdAt", void 0);
 __decorate([
     (0, typeorm_1.UpdateDateColumn)({
-        name: 'updated_at'
+        name: 'updated_at',
     }),
     __metadata("design:type", Date)
 ], UserEntity.prototype, "updatedAt", void 0);
@@ -67,5 +67,4 @@ UserEntity = __decorate([
     (0, typeorm_1.Entity)({ name: 'users' })
 ], UserEntity);
 exports.UserEntity = UserEntity;
-;
 //# sourceMappingURL=User.js.map
