@@ -1,115 +1,16 @@
-import express, { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import { validationResult } from 'express-validator';
+import { Router } from 'express';
 import { isAuth } from '../middlewares/auth';
-import { PostsEntity as Post } from '../entities/Post';
-import { UserEntity as User } from '../entities/User';
 import { postValidator } from '../validations/posts';
-import { DecodedTokenFields } from 'src/types';
+import postController from '../controllers/posts';
 
-const router = express.Router();
+const router = Router();
 
-router.post(
-    '/',
-    [isAuth, ...postValidator],
-    async (req: Request, res: Response) => {
-        try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
-            }
+router.post('/', [isAuth, ...postValidator], postController.createNewPost);
 
-            const { title, body, imageUrl } = req.body;
+router.get('/', isAuth, postController.getAllPosts);
 
-            const token = req.headers.authorization?.split(' ')[1];
+router.get('/:id', isAuth, postController.getOnePost);
 
-            const tokenFields = jwt.verify(
-                token ?? '',
-                process.env.JWT_SECRET ?? ''
-            );
-
-            const user = await User.findOneBy({
-                email: (<DecodedTokenFields>tokenFields).email,
-            });
-
-            if (!user) {
-                return res.status(400).json({ msg: 'user not found' });
-            }
-            const newPost = Post.create();
-
-            newPost.title = title;
-            newPost.body = body;
-            newPost.imageUrl = imageUrl;
-            newPost.user = user;
-
-            await newPost.save();
-
-            return res.json(newPost);
-        } catch (e) {
-            return res
-                .status(500)
-                .json('Something went wrong, please try again');
-        }
-    }
-);
-
-router.get('/', isAuth, async (_, res) => {
-    try {
-        const posts = await Post.find();
-
-        return res.json(posts);
-    } catch (e) {
-        return res.status(500).json('Something went wrong, please try again');
-    }
-});
-
-router.get('/:id', isAuth, async (req, res) => {
-    try {
-        const id = Number(req.params.id);
-
-        const post = await Post.createQueryBuilder('posts')
-            .where('posts.post_id = :id', { id })
-            .innerJoinAndSelect('posts.user', 'users')
-            .getOne();
-
-        return res.json(post);
-    } catch (e) {
-        return res.status(500).json('Something went wrong, please try again');
-    }
-});
-
-router.delete('/:id', isAuth, async (req, res) => {
-    try {
-        const id = Number(req.params.id);
-
-        const post = await Post.createQueryBuilder('posts')
-            .innerJoinAndSelect('posts.user', 'users')
-            .where('posts.post_id = :id', { id })
-            .getOne();
-
-        if (!post) {
-            return res.status(400).json({ msg: 'post not found' });
-        }
-
-        const token = req.headers.authorization?.split(' ')[1];
-
-        const tokenFields = jwt.verify(
-            token ?? '',
-            process.env.JWT_SECRET ?? ''
-        );
-
-        if (post.user.email != (<DecodedTokenFields>tokenFields).email) {
-            return res
-                .status(400)
-                .json({ msg: 'you have no permission to delete this post' });
-        }
-
-        await Post.delete(id);
-
-        return res.json({ msg: 'post was deleted' });
-    } catch (e) {
-        return res.status(500).json('Something went wrong, please try again');
-    }
-});
+router.delete('/:id', isAuth, postController.deleteOnePost);
 
 export default router;
