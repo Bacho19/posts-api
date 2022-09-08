@@ -23,10 +23,16 @@ export class UserEntity extends BaseEntity {
     email: string;
 
     @Column({
-        name: 'full_name',
+        name: 'first_name',
         nullable: false,
     })
-    fullName: string;
+    firstName: string;
+
+    @Column({
+        name: 'last_name',
+        nullable: false,
+    })
+    lastName: string;
 
     @Column({
         nullable: false,

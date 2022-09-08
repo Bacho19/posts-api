@@ -14,21 +14,30 @@ class AuthController {
                 return res.status(400).json({ errors: errors.array() });
             }
 
-            const { email, password, fullName, avatarUrl } = req.body;
+            const { email, password, firstName, lastName, avatarUrl } =
+                req.body;
 
             const candidateUser = await User.findOneBy({ email });
 
             if (candidateUser) {
-                return res
-                    .status(400)
-                    .json({ message: 'User with this email already exists' });
+                return res.status(400).json({
+                    errors: [
+                        {
+                            value: '',
+                            param: 'email',
+                            location: 'body',
+                            msg: 'User with this email already exists',
+                        },
+                    ],
+                });
             }
 
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
 
             const user = User.create();
-            user.fullName = fullName;
+            user.firstName = firstName;
+            user.lastName = lastName;
             user.email = email;
             user.avatarUrl = avatarUrl;
             user.password = hashedPassword;
@@ -39,7 +48,8 @@ class AuthController {
 
             const resUser = {
                 email: user.email,
-                fullName: user.fullName,
+                firstName: user.firstName,
+                lastName: user.lastName,
                 avatarUrl: user.avatarUrl ?? null,
                 token,
             };
@@ -86,7 +96,8 @@ class AuthController {
 
             const resUser = {
                 email: candidateUser.email,
-                fullName: candidateUser.fullName,
+                firstName: candidateUser.firstName,
+                lastName: candidateUser.lastName,
                 avatarUrl: candidateUser.avatarUrl,
                 token,
             };

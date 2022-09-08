@@ -16,17 +16,25 @@ class AuthController {
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array() });
             }
-            const { email, password, fullName, avatarUrl } = req.body;
+            const { email, password, firstName, lastName, avatarUrl } = req.body;
             const candidateUser = await User_1.UserEntity.findOneBy({ email });
             if (candidateUser) {
-                return res
-                    .status(400)
-                    .json({ message: 'User with this email already exists' });
+                return res.status(400).json({
+                    errors: [
+                        {
+                            value: '',
+                            param: 'email',
+                            location: 'body',
+                            msg: 'User with this email already exists',
+                        },
+                    ],
+                });
             }
             const salt = await bcrypt_1.default.genSalt(10);
             const hashedPassword = await bcrypt_1.default.hash(password, salt);
             const user = User_1.UserEntity.create();
-            user.fullName = fullName;
+            user.firstName = firstName;
+            user.lastName = lastName;
             user.email = email;
             user.avatarUrl = avatarUrl;
             user.password = hashedPassword;
@@ -34,7 +42,8 @@ class AuthController {
             const token = token_1.default.genarateToken({ email });
             const resUser = {
                 email: user.email,
-                fullName: user.fullName,
+                firstName: user.firstName,
+                lastName: user.lastName,
                 avatarUrl: (_a = user.avatarUrl) !== null && _a !== void 0 ? _a : null,
                 token,
             };
@@ -70,7 +79,8 @@ class AuthController {
             });
             const resUser = {
                 email: candidateUser.email,
-                fullName: candidateUser.fullName,
+                firstName: candidateUser.firstName,
+                lastName: candidateUser.lastName,
                 avatarUrl: candidateUser.avatarUrl,
                 token,
             };

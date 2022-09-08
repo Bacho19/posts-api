@@ -29,11 +29,18 @@ __decorate([
 ], UserEntity.prototype, "email", void 0);
 __decorate([
     (0, typeorm_1.Column)({
-        name: 'full_name',
+        name: 'first_name',
         nullable: false,
     }),
     __metadata("design:type", String)
-], UserEntity.prototype, "fullName", void 0);
+], UserEntity.prototype, "firstName", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        name: 'last_name',
+        nullable: false,
+    }),
+    __metadata("design:type", String)
+], UserEntity.prototype, "lastName", void 0);
 __decorate([
     (0, typeorm_1.Column)({
         nullable: false,
