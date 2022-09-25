@@ -16,7 +16,7 @@ class AuthController {
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array() });
             }
-            const { email, password, firstName, lastName, avatarUrl } = req.body;
+            const { email, password, confirmPassword, firstName, lastName, avatarUrl, } = req.body;
             const candidateUser = await User_1.UserEntity.findOneBy({ email });
             if (candidateUser) {
                 return res.status(400).json({
@@ -26,6 +26,18 @@ class AuthController {
                             param: 'email',
                             location: 'body',
                             msg: 'User with this email already exists',
+                        },
+                    ],
+                });
+            }
+            if (password !== confirmPassword) {
+                return res.status(400).json({
+                    errors: [
+                        {
+                            value: '',
+                            param: 'confirmPassword',
+                            location: 'body',
+                            msg: 'Passwords must match',
                         },
                     ],
                 });
@@ -64,15 +76,29 @@ class AuthController {
             const { email, password } = req.body;
             const candidateUser = await User_1.UserEntity.findOneBy({ email });
             if (!candidateUser) {
-                return res
-                    .status(400)
-                    .json({ message: 'Invalid email or password' });
+                return res.status(400).json({
+                    errors: [
+                        {
+                            value: '',
+                            param: 'password',
+                            location: 'body',
+                            msg: 'Invalid email or password',
+                        },
+                    ],
+                });
             }
             const isValidPassword = await bcrypt_1.default.compare(password, candidateUser.password);
             if (!isValidPassword) {
-                return res
-                    .status(400)
-                    .json({ message: 'Invalid email or password' });
+                return res.status(400).json({
+                    errors: [
+                        {
+                            value: '',
+                            param: 'password',
+                            location: 'body',
+                            msg: 'Invalid email or password',
+                        },
+                    ],
+                });
             }
             const token = token_1.default.genarateToken({
                 email: candidateUser.email,
