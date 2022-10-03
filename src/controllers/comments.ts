@@ -76,6 +76,44 @@ class CommentsController {
                 .json('Something went wrong, please try again');
         }
     }
+
+    async deleteComment(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+
+            const comment = await PostComments.createQueryBuilder(
+                'post_comments'
+            )
+                .innerJoinAndSelect('post_comments.user', 'users')
+                .where('post_comments.comment_id = :id', { id })
+                .getOne();
+
+            if (!comment) {
+                return res.status(400).json({ msg: 'comment not found' });
+            }
+
+            const token = req.headers.authorization?.split(' ')[1];
+
+            const tokenFields = jwt.verify(
+                token ?? '',
+                process.env.JWT_SECRET ?? ''
+            );
+
+            if (comment.user.email != (<DecodedTokenFields>tokenFields).email) {
+                return res.status(400).json({
+                    msg: 'you have no permission to delete this comment',
+                });
+            }
+
+            await PostComments.delete(id);
+
+            return res.json({ msg: 'post was deleted' });
+        } catch (e) {
+            return res
+                .status(500)
+                .json('Something went wrong, please try again');
+        }
+    }
 }
 
 export default new CommentsController();
