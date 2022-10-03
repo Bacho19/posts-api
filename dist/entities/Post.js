@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostsEntity = void 0;
 const typeorm_1 = require("typeorm");
+const PostComments_1 = require("./PostComments");
 const User_1 = require("./User");
 let PostsEntity = class PostsEntity extends typeorm_1.BaseEntity {
 };
@@ -48,6 +49,10 @@ __decorate([
     }),
     __metadata("design:type", User_1.UserEntity)
 ], PostsEntity.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => PostComments_1.PostCommentsEntity, (comment) => comment.post),
+    __metadata("design:type", Array)
+], PostsEntity.prototype, "comments", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({
         name: 'created_at',

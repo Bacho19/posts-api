@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostCommentsEntity = void 0;
 const typeorm_1 = require("typeorm");
+const Post_1 = require("./Post");
 const User_1 = require("./User");
 let PostCommentsEntity = class PostCommentsEntity extends typeorm_1.BaseEntity {
 };
@@ -25,12 +26,23 @@ __decorate([
     __metadata("design:type", String)
 ], PostCommentsEntity.prototype, "text", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => User_1.UserEntity, (user) => user.comments),
+    (0, typeorm_1.ManyToOne)(() => User_1.UserEntity, (user) => user.comments, {
+        onDelete: 'SET NULL',
+    }),
     (0, typeorm_1.JoinColumn)({
         name: 'user_id',
     }),
     __metadata("design:type", User_1.UserEntity)
 ], PostCommentsEntity.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Post_1.PostsEntity, (post) => post.comments, {
+        onDelete: 'SET NULL',
+    }),
+    (0, typeorm_1.JoinColumn)({
+        name: 'post_id',
+    }),
+    __metadata("design:type", Post_1.PostsEntity)
+], PostCommentsEntity.prototype, "post", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({
         name: 'created_at',

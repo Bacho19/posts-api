@@ -8,6 +8,7 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+import { PostsEntity } from './Post';
 import { UserEntity } from './User';
 
 @Entity({
@@ -22,11 +23,21 @@ export class PostCommentsEntity extends BaseEntity {
     @Column()
     text: string;
 
-    @ManyToOne(() => UserEntity, (user) => user.comments)
+    @ManyToOne(() => UserEntity, (user) => user.comments, {
+        onDelete: 'SET NULL',
+    })
     @JoinColumn({
         name: 'user_id',
     })
     user: UserEntity;
+
+    @ManyToOne(() => PostsEntity, (post) => post.comments, {
+        onDelete: 'SET NULL',
+    })
+    @JoinColumn({
+        name: 'post_id',
+    })
+    post: PostsEntity;
 
     @CreateDateColumn({
         name: 'created_at',

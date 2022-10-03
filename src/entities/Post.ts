@@ -7,7 +7,9 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     BaseEntity,
+    OneToMany,
 } from 'typeorm';
+import { PostCommentsEntity } from './PostComments';
 import { UserEntity } from './User';
 
 @Entity({
@@ -42,6 +44,9 @@ export class PostsEntity extends BaseEntity {
         name: 'user_id',
     })
     user: UserEntity;
+
+    @OneToMany(() => PostCommentsEntity, (comment) => comment.post)
+    comments: PostCommentsEntity[];
 
     @CreateDateColumn({
         name: 'created_at',

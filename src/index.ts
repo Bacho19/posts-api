@@ -3,6 +3,7 @@ import cors from 'cors';
 import { AppDataSource } from './data-source';
 import authRoute from './routes/auth';
 import postsRoute from './routes/posts';
+import commentsRoute from './routes/comments';
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(
 app.use(express.json());
 app.use('/auth', authRoute);
 app.use('/posts', postsRoute);
+app.use('/comments', commentsRoute);
 
 const loadDatabase = async () => {
     try {
