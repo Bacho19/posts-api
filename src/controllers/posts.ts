@@ -61,14 +61,21 @@ class PostsController {
     async getOnePost(req: Request, res: Response) {
         try {
             const id = Number(req.params.id);
-
             const post = await Post.createQueryBuilder('posts')
                 .where('posts.post_id = :id', { id })
                 .innerJoin('posts.user', 'users')
-                .addSelect(['users.email', 'users.fullName', 'users.avatarUrl'])
+                .addSelect([
+                    'users.email',
+                    'users.firstName',
+                    'users.lastName',
+                    'users.avatarUrl',
+                ])
                 .getOne();
-
-            return res.json(post);
+            if (post) {
+                return res.json(post);
+            } else {
+                return res.status(400).json({ message: 'No post found' });
+            }
         } catch (e) {
             return res
                 .status(500)
