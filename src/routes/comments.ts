@@ -5,5 +5,6 @@ import commentsController from '../controllers/comments';
 const router = Router();
 
 router.post('/:id', isAuth, commentsController.createComment);
+router.get('/:id', isAuth, commentsController.getComments);
 
 export default router;

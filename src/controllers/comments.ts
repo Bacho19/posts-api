@@ -50,6 +50,32 @@ class CommentsController {
                 .json('Something went wrong, please try again');
         }
     }
+
+    async getComments(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+
+            const comments = await PostComments.createQueryBuilder(
+                'post_comments'
+            )
+                .where('post_comments.post_id = :id', { id })
+                .innerJoin('post_comments.post', 'posts')
+                .innerJoin('post_comments.user', 'users')
+                .addSelect([
+                    'users.email',
+                    'users.firstName',
+                    'users.lastName',
+                    'users.avatarUrl',
+                ])
+                .getMany();
+
+            return res.json(comments);
+        } catch (e) {
+            return res
+                .status(500)
+                .json('Something went wrong, please try again');
+        }
+    }
 }
 
 export default new CommentsController();
