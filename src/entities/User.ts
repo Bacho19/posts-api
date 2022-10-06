@@ -43,6 +43,7 @@ export class UserEntity extends BaseEntity {
     @Column({
         name: 'avatar_url',
         nullable: true,
+        default: 'https://www.011global.com/Account/Slices/user-anonymous.png',
     })
     avatarUrl: string;
 

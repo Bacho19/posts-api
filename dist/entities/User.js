@@ -52,6 +52,7 @@ __decorate([
     (0, typeorm_1.Column)({
         name: 'avatar_url',
         nullable: true,
+        default: 'https://www.011global.com/Account/Slices/user-anonymous.png',
     }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "avatarUrl", void 0);
