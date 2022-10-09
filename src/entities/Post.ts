@@ -10,6 +10,7 @@ import {
     OneToMany,
 } from 'typeorm';
 import { PostCommentsEntity } from './PostComments';
+import { PostLikesEntity } from './PostLikes';
 import { UserEntity } from './User';
 
 @Entity({
@@ -49,6 +50,9 @@ export class PostsEntity extends BaseEntity {
 
     @OneToMany(() => PostCommentsEntity, (comment) => comment.post)
     comments: PostCommentsEntity[];
+
+    @OneToMany(() => PostLikesEntity, (like) => like.post)
+    likes: PostLikesEntity[];
 
     @CreateDateColumn({
         name: 'created_at',

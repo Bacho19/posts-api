@@ -4,6 +4,7 @@ import { AppDataSource } from './data-source';
 import authRoute from './routes/auth';
 import postsRoute from './routes/posts';
 import commentsRoute from './routes/comments';
+import likesRoute from './routes/likes';
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use('/auth', authRoute);
 app.use('/posts', postsRoute);
 app.use('/comments', commentsRoute);
+app.use('/likes', likesRoute);
 
 const loadDatabase = async () => {
     try {

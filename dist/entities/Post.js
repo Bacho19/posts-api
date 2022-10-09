@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostsEntity = void 0;
 const typeorm_1 = require("typeorm");
 const PostComments_1 = require("./PostComments");
+const PostLikes_1 = require("./PostLikes");
 const User_1 = require("./User");
 let PostsEntity = class PostsEntity extends typeorm_1.BaseEntity {
 };
@@ -54,6 +55,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => PostComments_1.PostCommentsEntity, (comment) => comment.post),
     __metadata("design:type", Array)
 ], PostsEntity.prototype, "comments", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => PostLikes_1.PostLikesEntity, (like) => like.post),
+    __metadata("design:type", Array)
+], PostsEntity.prototype, "likes", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({
         name: 'created_at',

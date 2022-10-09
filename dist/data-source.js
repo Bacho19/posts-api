@@ -10,6 +10,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const User_1 = require("./entities/User");
 const Post_1 = require("./entities/Post");
 const PostComments_1 = require("./entities/PostComments");
+const PostLikes_1 = require("./entities/PostLikes");
 dotenv_1.default.config();
 exports.AppDataSource = new typeorm_1.DataSource({
     type: 'postgres',
@@ -18,7 +19,7 @@ exports.AppDataSource = new typeorm_1.DataSource({
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    entities: [User_1.UserEntity, Post_1.PostsEntity, PostComments_1.PostCommentsEntity],
+    entities: [User_1.UserEntity, Post_1.PostsEntity, PostComments_1.PostCommentsEntity, PostLikes_1.PostLikesEntity],
     synchronize: true,
 });
 //# sourceMappingURL=data-source.js.map
