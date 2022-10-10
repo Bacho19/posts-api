@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
+import { PostLikesEntity as PostLikes } from '../entities/PostLikes';
 import { PostsEntity as Post } from '../entities/Post';
 import { UserEntity as User } from '../entities/User';
 import { DecodedTokenFields } from '../types';
@@ -71,8 +72,41 @@ class PostsController {
                     'users.avatarUrl',
                 ])
                 .getOne();
+
+            const likesCount = await PostLikes.createQueryBuilder('post_likes')
+                .where('post_likes.post_id = :id', { id })
+                .select()
+                .getCount();
+
+            const token = req.headers.authorization?.split(' ')[1];
+
+            const tokenFields = jwt.verify(
+                token ?? '',
+                process.env.JWT_SECRET ?? ''
+            );
+
+            const user = await User.findOneBy({
+                email: (<DecodedTokenFields>tokenFields).email,
+            });
+
+            if (!user) {
+                return res.status(400).json({ msg: 'user not found' });
+            }
+
+            const isPostLiked = await PostLikes.createQueryBuilder('post_likes')
+                .where(
+                    'post_likes.post_id = :postId and post_likes.user_id = :userId',
+                    { postId: id, userId: user.userId }
+                )
+                .select()
+                .getOne();
+
             if (post) {
-                return res.json(post);
+                return res.json({
+                    ...post,
+                    isLiked: Boolean(isPostLiked),
+                    likesCount,
+                });
             } else {
                 return res.status(400).json({ message: 'No post found' });
             }

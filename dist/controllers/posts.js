@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_validator_1 = require("express-validator");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const PostLikes_1 = require("../entities/PostLikes");
 const Post_1 = require("../entities/Post");
 const User_1 = require("../entities/User");
 class PostsController {
@@ -50,6 +51,7 @@ class PostsController {
         }
     }
     async getOnePost(req, res) {
+        var _a, _b;
         try {
             const id = Number(req.params.id);
             const post = await Post_1.PostsEntity.createQueryBuilder('posts')
@@ -62,8 +64,24 @@ class PostsController {
                 'users.avatarUrl',
             ])
                 .getOne();
+            const likesCount = await PostLikes_1.PostLikesEntity.createQueryBuilder('post_likes')
+                .where('post_likes.post_id = :id', { id })
+                .select()
+                .getCount();
+            const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
+            const tokenFields = jsonwebtoken_1.default.verify(token !== null && token !== void 0 ? token : '', (_b = process.env.JWT_SECRET) !== null && _b !== void 0 ? _b : '');
+            const user = await User_1.UserEntity.findOneBy({
+                email: tokenFields.email,
+            });
+            if (!user) {
+                return res.status(400).json({ msg: 'user not found' });
+            }
+            const isPostLiked = await PostLikes_1.PostLikesEntity.createQueryBuilder('post_likes')
+                .where('post_likes.post_id = :postId and post_likes.user_id = :userId', { postId: id, userId: user.userId })
+                .select()
+                .getOne();
             if (post) {
-                return res.json(post);
+                return res.json(Object.assign(Object.assign({}, post), { isLiked: Boolean(isPostLiked), likesCount }));
             }
             else {
                 return res.status(400).json({ message: 'No post found' });
