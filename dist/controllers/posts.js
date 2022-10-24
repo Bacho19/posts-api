@@ -93,6 +93,28 @@ class PostsController {
                 .json('Something went wrong, please try again');
         }
     }
+    async getMyPosts(req, res) {
+        var _a, _b;
+        try {
+            const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
+            const tokenFields = jsonwebtoken_1.default.verify(token !== null && token !== void 0 ? token : '', (_b = process.env.JWT_SECRET) !== null && _b !== void 0 ? _b : '');
+            const user = await User_1.UserEntity.findOneBy({
+                email: tokenFields.email,
+            });
+            if (!user) {
+                return res.status(400).json({ msg: 'user not found' });
+            }
+            const posts = await Post_1.PostsEntity.createQueryBuilder('posts')
+                .where('posts.user_id = :id', { id: user.userId })
+                .getMany();
+            return res.json(posts);
+        }
+        catch (e) {
+            return res
+                .status(500)
+                .json('Something went wrong, please try again');
+        }
+    }
     async deleteOnePost(req, res) {
         var _a, _b;
         try {

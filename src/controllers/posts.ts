@@ -117,6 +117,35 @@ class PostsController {
         }
     }
 
+    async getMyPosts(req: Request, res: Response) {
+        try {
+            const token = req.headers.authorization?.split(' ')[1];
+
+            const tokenFields = jwt.verify(
+                token ?? '',
+                process.env.JWT_SECRET ?? ''
+            );
+
+            const user = await User.findOneBy({
+                email: (<DecodedTokenFields>tokenFields).email,
+            });
+
+            if (!user) {
+                return res.status(400).json({ msg: 'user not found' });
+            }
+
+            const posts = await Post.createQueryBuilder('posts')
+                .where('posts.user_id = :id', { id: user.userId })
+                .getMany();
+
+            return res.json(posts);
+        } catch (e) {
+            return res
+                .status(500)
+                .json('Something went wrong, please try again');
+        }
+    }
+
     async deleteOnePost(req: Request, res: Response) {
         try {
             const id = Number(req.params.id);

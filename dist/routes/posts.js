@@ -10,6 +10,7 @@ const posts_2 = __importDefault(require("../controllers/posts"));
 const router = (0, express_1.Router)();
 router.post('/', [auth_1.isAuth, ...posts_1.postValidator], posts_2.default.createNewPost);
 router.get('/', auth_1.isAuth, posts_2.default.getAllPosts);
+router.get('/my-posts', auth_1.isAuth, posts_2.default.getMyPosts);
 router.get('/:id', auth_1.isAuth, posts_2.default.getOnePost);
 router.delete('/:id', auth_1.isAuth, posts_2.default.deleteOnePost);
 exports.default = router;
