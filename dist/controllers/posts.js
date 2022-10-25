@@ -133,7 +133,7 @@ class PostsController {
                     msg: 'you have no permission to delete this post',
                 });
             }
-            await Post_1.PostsEntity.delete(id);
+            await Post_1.PostsEntity.delete(id.toString());
             return res.json({ msg: 'post was deleted' });
         }
         catch (e) {

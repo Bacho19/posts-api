@@ -22,14 +22,18 @@ __decorate([
     __metadata("design:type", Number)
 ], PostLikesEntity.prototype, "likeId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => User_1.UserEntity, (user) => user.likes),
+    (0, typeorm_1.ManyToOne)(() => User_1.UserEntity, (user) => user.likes, {
+        onDelete: 'SET NULL',
+    }),
     (0, typeorm_1.JoinColumn)({
         name: 'user_id',
     }),
     __metadata("design:type", User_1.UserEntity)
 ], PostLikesEntity.prototype, "user", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => Post_1.PostsEntity, (post) => post.likes),
+    (0, typeorm_1.ManyToOne)(() => Post_1.PostsEntity, (post) => post.likes, {
+        onDelete: 'SET NULL',
+    }),
     (0, typeorm_1.JoinColumn)({
         name: 'post_id',
     }),

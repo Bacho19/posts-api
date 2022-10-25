@@ -19,13 +19,17 @@ export class PostLikesEntity extends BaseEntity {
     })
     likeId: number;
 
-    @ManyToOne(() => UserEntity, (user) => user.likes)
+    @ManyToOne(() => UserEntity, (user) => user.likes, {
+        onDelete: 'SET NULL',
+    })
     @JoinColumn({
         name: 'user_id',
     })
     user: UserEntity;
 
-    @ManyToOne(() => PostsEntity, (post) => post.likes)
+    @ManyToOne(() => PostsEntity, (post) => post.likes, {
+        onDelete: 'SET NULL',
+    })
     @JoinColumn({
         name: 'post_id',
     })

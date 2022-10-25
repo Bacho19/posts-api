@@ -172,7 +172,7 @@ class PostsController {
                 });
             }
 
-            await Post.delete(id);
+            await Post.delete(id.toString());
 
             return res.json({ msg: 'post was deleted' });
         } catch (e) {
